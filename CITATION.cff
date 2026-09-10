@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite it as below."
+title: "Incremental value of plasma TMAO in cardiovascular risk prediction"
+abstract: >-
+  Analysis code for estimating whether plasma trimethylamine N-oxide adds
+  predictive value to a conventional cardiovascular risk model, assessed by
+  discrimination, calibration, reclassification and net benefit.
+authors:
+  - family-names: Hussain
+    given-names: Qasim
+license: MIT
+repository-code: "https://github.com/Qasim-Hussain-Code/tmao_cardiovascular_risk_prediction"
+version: 0.1.0
+date-released: "2026-09-10"
+keywords:
+  - trimethylamine N-oxide
+  - cardiovascular risk prediction
+  - gut microbiome
+  - clinical prediction model
+  - decision curve analysis

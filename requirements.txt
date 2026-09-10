@@ -1,0 +1,9 @@
+# Versions are those the analysis was developed and tested against.
+# Lower bounds rather than exact pins, since nothing here depends on
+# behaviour that changed in a patch release.
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+scikit-learn>=1.4
+matplotlib>=3.8
+pytest>=7.4
