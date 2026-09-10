@@ -1,0 +1,25 @@
+# Analysis settings.
+#
+# These values mirror the defaults in src/tmao_cvd/config.py and are kept
+# here so that a run can be described without reading the code. The Python
+# dataclass remains the single source of truth for what the pipeline
+# executes. Change both together, or the record and the run will disagree.
+
+random_seed: 20260910
+
+resampling:
+  n_splits: 5
+  n_repeats: 5
+  n_bootstrap: 1000
+
+decision_curve:
+  threshold_min: 0.01
+  threshold_max: 0.40
+  n_thresholds: 79
+
+reporting:
+  calibration_bins: 10
+  figure_dpi: 300
+
+outcome: mace_3yr
+candidate_marker: log_tmao
