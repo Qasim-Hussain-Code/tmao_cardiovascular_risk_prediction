@@ -1,2 +1,39 @@
-# ignore large data files
+# Participant level data are never committed to this repository.
+# The blanket rule on CSV files is a deliberate second line of defence:
+# the directory rules below already cover the expected locations, but an
+# export saved in the wrong place should still not reach a commit.
 *.csv
+*.xlsx
+*.sav
+*.dta
+
+data/raw/*
+data/interim/*
+data/processed/*
+!data/**/.gitkeep
+
+# Generated analysis outputs. Everything here is reproducible from the
+# code and the seed recorded in results/tables/run_manifest.json.
+results/figures/*
+results/tables/*
+!results/**/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Environments
+.venv/
+venv/
+env/
+
+# Editors and operating system files
+.vscode/
+.idea/
+.DS_Store
