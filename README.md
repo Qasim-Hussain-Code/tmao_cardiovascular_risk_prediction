@@ -2,10 +2,6 @@
 
 [![tests](https://github.com/Qasim-Hussain-Code/tmao_cardiovascular_risk_prediction/actions/workflows/tests.yml/badge.svg)](https://github.com/Qasim-Hussain-Code/tmao_cardiovascular_risk_prediction/actions/workflows/tests.yml)
 
-Every figure quoted below is read from [results/metrics/00_summary.json](results/metrics/00_summary.json)
-and verified against it by [scripts/audit_readme.py](scripts/audit_readme.py).
-None is transcribed from a terminal session.
-
 ## 1. What this chapter set out to answer
 
 Trimethylamine N-oxide is produced when gut bacteria convert dietary choline,
