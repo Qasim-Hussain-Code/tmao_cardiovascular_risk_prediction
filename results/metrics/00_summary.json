@@ -1,0 +1,93 @@
+{
+  "generated_utc": "2026-09-11T05:32:59+00:00",
+  "scope": "SCOPE OF EVERY RESULT BELOW: these findings come from a single cohort of post-PCI secondary prevention patients with stable angina, of Asian ethnicity, uniformly on dual antiplatelet therapy, with a symptom-driven endpoint (recurrent angina at nine months). Metabolite values are relative peak areas in arbitrary instrument units, not concentrations, so no published cut point applies. There is no external validation, because two further cohorts referred to in connection with this work were never deposited. Acquisition order is perfectly confounded with outcome and no batch metadata exists. Nothing here transfers to primary prevention, to hard cardiovascular endpoints, or to other populations.",
+  "dataset": {
+    "source": "a public Metabolomics Workbench deposit",
+    "accession": "ST001420",
+    "licence": "CC BY 4.0",
+    "n_participants": 750,
+    "n_events": 210,
+    "n_metabolites": 600,
+    "measurement_scale": "relative peak area (arbitrary instrument units)"
+  },
+  "question_1": {
+    "question": "Does TMAO add beyond its own dietary precursors?",
+    "verdict": "POSITIVE",
+    "baseline_auc": 0.8475,
+    "baseline_auc_ci": [
+      0.8132,
+      0.8818
+    ],
+    "extended_auc": 0.8731,
+    "extended_auc_ci": [
+      0.8402,
+      0.906
+    ],
+    "delta_auc": 0.0256,
+    "delta_auc_ci": [
+      0.0075,
+      0.0436
+    ],
+    "delong_p": 0.00547,
+    "idi": 0.0669,
+    "idi_ci": [
+      0.0454,
+      0.0882
+    ],
+    "nri_total": 0.6571,
+    "nri_ci": [
+      0.4973,
+      0.8016
+    ],
+    "decision_curve_separation": 0.9821,
+    "panel_context": {
+      "marker_univariate_auc": 0.7404,
+      "percentile_of_panel": 64.2,
+      "metabolites_ranking_higher": 144,
+      "panel_size": 405,
+      "best_precursor": "Betaine",
+      "best_precursor_auc": 0.8427,
+      "panel_median_auc": 0.6852
+    }
+  },
+  "question_2": {
+    "question": "What does the deposited panel support under honest validation?",
+    "verdict": "PARTIAL",
+    "accuracy": 0.9973,
+    "sensitivity": 1.0,
+    "specificity": 0.9963,
+    "auc": 1.0,
+    "calibration_slope": 2.9711,
+    "calibration_intercept": 0.0218,
+    "previously_reported_figure": "above 0.890 on accuracy, sensitivity and specificity"
+  },
+  "question_3": {
+    "question": "Is acquisition order structure detectable?",
+    "verdict": "ORDER STRUCTURE DETECTED",
+    "null_expectation": 0.05,
+    "cases": {
+      "n_participants": 210,
+      "metabolites_tested": 405,
+      "proportion_p_below_0_05": 0.1679,
+      "ks_vs_uniform_p": "5.88e-08"
+    },
+    "controls": {
+      "n_participants": 540,
+      "metabolites_tested": 405,
+      "proportion_p_below_0_05": 0.1556,
+      "ks_vs_uniform_p": "8.3e-11"
+    }
+  },
+  "post_hoc": {
+    "note": "not pre-specified; prompted by the question 2 result",
+    "panel_median_auc": 0.6852,
+    "panel_median_auc_under_null": 0.5,
+    "proportion_above_0_6": 0.7654,
+    "proportion_above_0_8": 0.2444,
+    "proportion_above_0_9": 0.0716,
+    "metabolites_fully_observed": 405,
+    "metabolites_absent_for_everyone": 195,
+    "missingness_max_group_gap": 0.0,
+    "total_intensity_auc": 0.7289
+  }
+}

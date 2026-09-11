@@ -176,6 +176,40 @@ def delong_test(
     return difference, float(2.0 * norm.sf(abs(z_statistic)))
 
 
+def delong_difference_with_ci(
+    y_true: np.ndarray,
+    predictions_a: np.ndarray,
+    predictions_b: np.ndarray,
+    alpha: float = 0.05,
+) -> tuple[float, float, float, float]:
+    """Difference in area with a confidence interval and a two sided p value.
+
+    The interval and the p value come from the same DeLong covariance, so they
+    agree exactly: the interval excludes zero if and only if the p value falls
+    below ``alpha``. The plan states the question 1 positive branch in terms of
+    the interval, so the interval is what gets reported, with the p value
+    alongside it rather than in place of it.
+    """
+
+    order, n_positive = _order_by_outcome(y_true)
+    stacked = np.vstack(
+        [np.asarray(predictions_a, dtype=float), np.asarray(predictions_b, dtype=float)]
+    )[:, order]
+    aucs, covariance = _fast_delong(stacked, n_positive)
+
+    contrast = np.array([[-1.0, 1.0]])
+    difference = float(aucs[1] - aucs[0])
+    variance = float((contrast @ covariance @ contrast.T).item())
+
+    if variance <= 0:
+        return difference, difference, difference, 1.0
+
+    standard_error = float(np.sqrt(variance))
+    half_width = norm.ppf(1.0 - alpha / 2.0) * standard_error
+    p_value = float(2.0 * norm.sf(abs(difference / standard_error)))
+    return difference, difference - half_width, difference + half_width, p_value
+
+
 # ---------------------------------------------------------------------------
 # Calibration
 # ---------------------------------------------------------------------------

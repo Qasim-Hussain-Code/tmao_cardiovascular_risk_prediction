@@ -19,6 +19,7 @@ PROCESSED_DATA_DIR = DATA_DIR / "processed"
 RESULTS_DIR = PROJECT_ROOT / "results"
 FIGURES_DIR = RESULTS_DIR / "figures"
 TABLES_DIR = RESULTS_DIR / "tables"
+METRICS_DIR = RESULTS_DIR / "metrics"
 
 #: Location the pipeline checks for a real cohort before falling back to
 #: simulation. The file is never committed. See data/README.md.

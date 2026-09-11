@@ -18,9 +18,20 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from tmao_cvd.config import DEFAULT_CONFIG, TABLES_DIR, AnalysisConfig  # noqa: E402
+from tmao_cvd.config import (  # noqa: E402
+    DEFAULT_CONFIG,
+    METRICS_DIR,
+    TABLES_DIR,
+    AnalysisConfig,
+)
+from tmao_cvd.metrics import build_summary, write_summary  # noqa: E402
 from tmao_cvd import post_hoc  # noqa: E402
-from tmao_cvd.reanalysis import question_one, question_three, question_two  # noqa: E402
+from tmao_cvd.reanalysis import (  # noqa: E402
+    panel_context,
+    question_one,
+    question_three,
+    question_two,
+)
 from tmao_cvd.reporting import SCOPE_STATEMENT, render_report  # noqa: E402
 from tmao_cvd.st001420 import add_log_pathway_features, load_st001420  # noqa: E402
 
@@ -51,18 +62,18 @@ def main() -> int:
     frame = add_log_pathway_features(frame)
     print(f"Loaded {metadata.provenance}\n")
 
-    results = []
-
     print("Running question 1 ...")
     q1, curves = question_one(frame, config)
-    results.append(q1)
 
+    q2 = None
     if not arguments.skip_question_two:
         print("Running question 2 (nested cross validation over 600 metabolites) ...")
-        results.append(question_two(frame, config))
+        q2 = question_two(frame, config)
 
     print("Running question 3 ...")
-    results.append(question_three(frame))
+    q3 = question_three(frame)
+
+    results = [r for r in (q1, q2, q3) if r is not None]
 
     report = render_report(results, scope=SCOPE_STATEMENT)
     print("\n" + report)
@@ -77,6 +88,17 @@ def main() -> int:
         print(f"\n{name}:")
         print(table.to_string(index=False))
         table.to_csv(TABLES_DIR / f"post_hoc_{name}.csv", index=False)
+
+    # The single machine readable summary every README figure must trace to.
+    if q2 is None:
+        print("\nQuestion 2 was skipped, so no summary is written: the summary is "
+              "defined as every headline figure from all three questions.")
+    else:
+        summary = build_summary(
+            {"q1": q1, "q2": q2, "q3": q3}, panel_context(frame), diagnostics, metadata
+        )
+        path = write_summary(summary, METRICS_DIR)
+        print(f"\nSummary written to {path}")
 
     (TABLES_DIR / "reanalysis_report.txt").write_text(report)
     for index, result in enumerate(results, start=1):

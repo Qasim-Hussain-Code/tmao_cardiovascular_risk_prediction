@@ -29,8 +29,9 @@ SCOPE_STATEMENT = (
     "uniformly on dual antiplatelet therapy, with a symptom-driven endpoint "
     "(recurrent angina at nine months). Metabolite values are relative peak areas in "
     "arbitrary instrument units, not concentrations, so no published cut point "
-    "applies. There is no external validation, because the two other cohorts in the "
-    "source publication were never deposited. Acquisition order is perfectly "
+    "applies. There is no external validation, because two further cohorts referred "
+    "to in connection with this work were never deposited. Acquisition order is "
+    "perfectly "
     "confounded with outcome and no batch metadata exists. Nothing here transfers to "
     "primary prevention, to hard cardiovascular endpoints, or to other populations."
 )

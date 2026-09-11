@@ -18,6 +18,10 @@ results/figures/*
 results/tables/*
 !results/**/.gitkeep
 
+# results/metrics is the exception and IS tracked. Every number quoted in the
+# README must trace to a file here, and scripts/audit_readme.py checks that it
+# does, so the audit trail has to survive a clean clone.
+
 # Python
 __pycache__/
 *.py[cod]

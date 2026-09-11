@@ -25,6 +25,7 @@ from sklearn.preprocessing import StandardScaler
 from .config import AnalysisConfig
 from .evaluate import (
     auc_with_ci,
+    delong_difference_with_ci,
     bootstrap_interval,
     category_free_nri,
     delong_test,
@@ -122,7 +123,9 @@ def question_one(
 
     base_auc, base_lo, base_hi = auc_with_ci(outcome, baseline.averaged)
     ext_auc, ext_lo, ext_hi = auc_with_ci(outcome, extended.averaged)
-    difference, p_value = delong_test(outcome, baseline.averaged, extended.averaged)
+    difference, delta_lo, delta_hi, p_value = delong_difference_with_ci(
+        outcome, baseline.averaged, extended.averaged
+    )
 
     base_cal = summarise_calibration(outcome, baseline.averaged)
     ext_cal = summarise_calibration(outcome, extended.averaged)
@@ -148,7 +151,7 @@ def question_one(
     separation = float(np.mean(nb_ext > nb_base + 1e-4))
 
     # The DeLong interval on the difference is the pre-specified primary test.
-    interval_excludes_zero = p_value < 0.05
+    interval_excludes_zero = not (delta_lo <= 0.0 <= delta_hi)
     curves_separate = separation > 0.5
 
     if interval_excludes_zero and curves_separate:
@@ -181,7 +184,7 @@ def question_one(
             },
             {
                 "model": "difference", "auc": round(difference, 4),
-                "auc_ci_lower": np.nan, "auc_ci_upper": np.nan,
+                "auc_ci_lower": round(delta_lo, 4), "auc_ci_upper": round(delta_hi, 4),
                 "calibration_slope": np.nan, "brier_skill": np.nan,
             },
         ]
