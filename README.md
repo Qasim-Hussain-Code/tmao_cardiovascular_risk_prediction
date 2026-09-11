@@ -1,107 +1,239 @@
-# TMAO and cardiovascular risk prediction
+# TMAO, recurrent angina, and what a public deposit can support
 
 [![tests](https://github.com/Qasim-Hussain-Code/tmao_cardiovascular_risk_prediction/actions/workflows/tests.yml/badge.svg)](https://github.com/Qasim-Hussain-Code/tmao_cardiovascular_risk_prediction/actions/workflows/tests.yml)
 
-Analysis code for a single question: does fasting plasma trimethylamine
-N-oxide (TMAO) add predictive value to a cardiovascular risk model that
-already contains the variables a clinician has to hand?
+Every figure quoted below is read from [results/metrics/00_summary.json](results/metrics/00_summary.json)
+and verified against it by [scripts/audit_readme.py](scripts/audit_readme.py).
+None is transcribed from a terminal session.
 
-## Background
+## 1. What this chapter set out to answer
 
-TMAO is a small molecule of partly microbial origin. Gut bacteria convert
-dietary choline, phosphatidylcholine and L-carnitine into trimethylamine,
-which the liver then oxidises to TMAO through flavin containing
-monooxygenase 3. Work from Hazen's group established the pathway and linked
-it to atherosclerosis in animal models and to incident cardiovascular events
-in clinical cohorts (Wang et al., 2011; Tang et al., 2013; Koeth et al.,
-2013).
+Trimethylamine N-oxide is produced when gut bacteria convert dietary choline,
+phosphatidylcholine and L-carnitine into trimethylamine, which the liver then
+oxidises through flavin-containing monooxygenase 3. Higher circulating
+concentrations have been associated with incident cardiovascular events in
+several prospective cohorts.
 
-That an association exists is now reasonably well supported. Whether it is
-useful for prediction is a separate question, and a harder one. A marker can
-be strongly and reproducibly associated with an outcome and still add almost
-nothing to a model containing age and kidney function. TMAO is a pointed
-case, because it is cleared renally: impaired renal function raises
-circulating TMAO and independently raises cardiovascular risk (Tang et al.,
-2015). Any honest assessment has to hold renal function fixed before asking
-what TMAO contributes.
+Association is not predictive usefulness. A marker earns a place in a risk
+model only if it improves discrimination, calibration or clinical decision
+making beyond the variables a clinician already holds. The original question,
+fixed in [docs/analysis_plan.md](docs/analysis_plan.md), was therefore narrow:
+does plasma TMAO add predictive value to a conventional cardiovascular risk
+model for incident major adverse cardiovascular events in primary prevention?
 
-This repository implements that assessment.
+TMAO is a pointed case because it is cleared renally. Impaired renal function
+raises circulating TMAO and independently raises cardiovascular risk, so any
+honest assessment must hold renal function fixed before asking what TMAO
+contributes.
 
-## Current status
+## 2. Why that question could not be answered, and what the search found
 
-Two questions now live in this repository, and they are not the same question.
-The distinction matters enough to state before anything else.
+No public dataset supports it. The cohorts that could, chiefly the
+Multi-Ethnic Study of Atherosclerosis and the Cardiovascular Health Study,
+hold their TMAO measurements under controlled access requiring institutional
+affiliation, ethical approval and a data use agreement. TMAO is not part of
+the standard BioLINCC release for those cohorts, so even an approved request
+for the parent study would not return the one variable this chapter is about.
 
-**The original question**, in [docs/analysis_plan.md](docs/analysis_plan.md),
-asks whether TMAO adds predictive value to a conventional cardiovascular risk
-model for incident major adverse cardiovascular events in primary prevention.
-No public dataset supports it. MESA and the Cardiovascular Health Study hold
-their TMAO measurements behind controlled access, and the TMAO ancillary
-measurements are not part of the standard BioLINCC release. That plan stands
-unchanged, waiting for data.
+The first search was unsuccessful for a reason worth recording, because it was
+a methodological error rather than bad luck. I searched repository *study
+titles* for trimethylamine and TMAO, which returned three studies, only one of
+them human and that one with 36 participants and no outcome. Searching instead
+by *measured metabolite* returned 98 human blood studies. The distinction is
+that a metabolite appears in the panel of studies whose titles never mention
+it, which is the ordinary case for an untargeted or broad targeted assay.
 
-**A second, narrower question**, in
-[docs/reanalysis_plan.md](docs/reanalysis_plan.md), asks whether TMAO carries
-information beyond its own dietary precursors, in a secondary prevention
-cohort of post-PCI patients with stable angina, of Asian ethnicity, uniformly
-on dual antiplatelet therapy, predicting recurrent angina within nine months.
-Public data does support that one: Metabolomics Workbench study ST001420, 750
-participants and 210 events, released under CC BY 4.0.
+That second search located a public Metabolomics Workbench deposit, accession
+ST001420, released under CC BY 4.0. The depositing group is not named anywhere
+in this repository, and nothing here is a comment on them.
 
-This is a scope change, not a refinement. Nothing learned from the second
-question transfers to primary prevention, to hard cardiovascular endpoints, or
-to populations unlike that cohort. The reanalysis plan states the reasoning,
-the limitations and the interpretation of every possible outcome, and it was
-committed before the code it governs was written.
+## 3. What the deposit can and cannot answer
 
-Two constraints on the reanalysis data are worth repeating here because they
-bound what any result can mean. Its values are relative peak areas rather than
-concentrations, so no published cut point may be applied to them, and this is
-enforced by an exception rather than a comment. Its sample identifiers are
-perfectly confounded with outcome, with no batch metadata deposited, so
-acquisition artefact cannot be ruled out.
-
-Running the pipeline on the simulated cohort still produces plausible looking
-tables and figures, and every one of them is labelled `SIMULATED DATA, not an
-observed cohort` in the file itself. The simulator plants a TMAO effect of its
-own choosing and the analysis recovers it, which demonstrates that the code
-works. It demonstrates nothing whatever about TMAO.
-
-## The comparison
-
-Two nested models, differing by exactly one term.
-
-- **Baseline.** Age, sex, current smoking, diabetes, body mass index,
-  systolic blood pressure, total cholesterol, HDL cholesterol, estimated
-  glomerular filtration rate, log C reactive protein.
-- **Extended.** The baseline model plus log TMAO.
-
-Keeping everything else identical is what makes the difference between them
-readable as the contribution of that one term. The full specification, fixed
-in advance, is in [docs/analysis_plan.md](docs/analysis_plan.md).
-
-## How performance is judged
-
-No single number settles whether a marker is worth measuring, so four
-questions are asked separately, following the framework of Steyerberg and
-colleagues (2010).
-
-| Question | Measure |
+| Property | Value |
 | --- | --- |
-| Does the model rank cases above controls? | Area under the ROC curve, compared between models by the paired DeLong test |
-| Are the predicted risks numerically right? | Calibration intercept and slope, Brier score, Brier skill score |
-| Do individuals move to more accurate risks? | Integrated discrimination improvement, category free net reclassification improvement, with bootstrap intervals |
-| Would decisions actually improve? | Net benefit across risk thresholds, against treating everyone and treating nobody |
+| Design | Prospective observational cohort, sampled after percutaneous coronary intervention |
+| Participants | 750 |
+| Events | 210 recurrent angina by nine months |
+| Panel | 600 metabolites by targeted mass spectrometry |
+| Licence | CC BY 4.0 |
 
-All performance figures come from out of fold predictions under repeated
-stratified cross validation. Apparent performance is never reported, because
-it is optimistic by an amount that grows with the number of candidate terms,
-which is exactly the situation being studied.
+**It cannot answer the original question.** The deposit carries no
+participant-level clinical covariates. Age, sex, smoking and lipids exist only
+as aggregate summaries in the study description, so there is no conventional
+risk model for TMAO to be incremental to.
 
-The reclassification measures are included because the biomarker literature
-expects them, not because they are trusted. Both are sensitive to
-miscalibration and both reward predictions that are merely more extreme. The
-decision curve carries more weight in interpretation.
+**It can answer a narrower one**, fixed in advance in
+[docs/reanalysis_plan.md](docs/reanalysis_plan.md) and committed before the
+code it governs: does TMAO carry information beyond its own dietary
+precursors, in a secondary prevention cohort of post-PCI patients with stable
+angina, of Asian ethnicity, uniformly on dual antiplatelet therapy, predicting
+recurrent angina within nine months?
+
+That is a different claim, not a weaker version of the original. Nothing
+learned here transfers to primary prevention, to hard cardiovascular
+endpoints, or to other populations.
+
+Two constraints bound every result. Values are relative peak areas in
+arbitrary instrument units rather than concentrations, so no published cut
+point may be applied to them; this is enforced by an exception in
+[src/tmao_cvd/scales.py](src/tmao_cvd/scales.py), not by a comment. And sample
+identifiers are perfectly ordered by outcome, with no batch identifier, run
+order or acquisition date deposited.
+
+## 4. The pre-specified questions and their verdicts
+
+Two substantive questions and one diagnostic, each with its verdict decided by
+thresholds fixed before any estimate existed.
+
+### Question 1, primary. Verdict: POSITIVE
+
+Baseline model is log choline, log betaine and log carnitine. The extended
+model adds log TMAO and nothing else.
+
+| Model | Area under the curve | Interval |
+| --- | --- | --- |
+| Baseline, precursors only | 0.8475 | 0.8132 to 0.8818 |
+| Extended, plus log TMAO | 0.8731 | 0.8402 to 0.906 |
+| Difference | 0.0256 | 0.0075 to 0.0436 |
+
+The interval on the difference excludes zero, with a paired DeLong p of
+0.00547. Integrated discrimination improvement is 0.0669, interval 0.0454 to
+0.0882. Category-free net reclassification improvement totals 0.6571, interval
+0.4973 to 0.8016. The extended model's decision curve lies above the
+baseline's across a proportion 0.9821 of the pre-specified threshold range.
+
+### Question 2, replication. Verdict: PARTIAL
+
+An L2 penalised model over the whole panel, with the penalty chosen inside
+each training fold, evaluated strictly out of fold.
+
+| Metric | Out of fold |
+| --- | --- |
+| Accuracy | 0.9973 |
+| Sensitivity | 1.0 |
+| Specificity | 0.9963 |
+| Area under the curve | 1.0 |
+| Calibration slope | 2.9711 |
+| Calibration intercept | 0.0218 |
+
+A figure of above 0.890 on accuracy, sensitivity and specificity has
+previously been reported in connection with this deposit. Discrimination here
+sits above the pre-specified reproduction floor, but the calibration slope of
+2.9711 falls far outside the pre-specified band, so the reproduction criterion
+is not met and the verdict is PARTIAL. An area under the curve of 1.0 on 750
+participants is not a performance result to be reported and moved past. It is
+a signal that something structural separates the two groups, which is what
+question 3 and the post hoc diagnostics then examined.
+
+### Question 3, diagnostic. Verdict: ORDER STRUCTURE DETECTED
+
+Spearman correlation between sample index and log peak area, computed within
+each outcome block separately so the test is blind to the between-group
+difference. Under the null of no order structure the p values are uniform, so
+the expected proportion below 0.05 is 0.05.
+
+| Block | Participants | Metabolites tested | Proportion at p below 0.05 | Kolmogorov-Smirnov p |
+| --- | --- | --- | --- | --- |
+| Cases | 210 | 405 | 0.1679 | 5.88e-08 |
+| Controls | 540 | 405 | 0.1556 | 8.3e-11 |
+
+Both blocks breach both pre-specified limits.
+
+### Post hoc diagnostics
+
+Not pre-specified. Prompted by the question 2 result, and labelled as post hoc
+wherever they appear.
+
+| Diagnostic | Value | Under the null |
+| --- | --- | --- |
+| Median univariate area under the curve across the panel | 0.6852 | 0.5 |
+| Proportion of metabolites above 0.6 | 0.7654 | |
+| Proportion above 0.8 | 0.2444 | |
+| Proportion above 0.9 | 0.0716 | |
+| Total log intensity, direction-free area | 0.7289 | |
+
+Missingness was the first hypothesis for the perfect separation and is not the
+mechanism. Of the panel, 405 metabolites are fully observed and 195 are absent
+for every participant, and the maximum difference in missingness between the
+groups is 0.0.
+
+## 5. The question 1 inversion
+
+Two statements are both true, and reporting either without the other misleads.
+
+**The statistic is positive exactly as pre-specified.** The interval on the
+difference excludes zero, the decision curves separate, and the verdict fired
+POSITIVE under rules fixed before any estimate existed. It has not been
+revised after the fact.
+
+**It is not evidence about TMAO biology.** TMAO has a univariate area under
+the curve of 0.7404, which places it at the 64.2nd percentile of the 405 fully
+observed metabolites, with 144 ranking above it. Among those ranking above it
+is betaine, at 0.8427, which is one of its own precursors and therefore part
+of the baseline model it was tested against. The panel median is 0.6852
+against a null of 0.5, and a proportion 0.7654 of metabolites discriminate
+above 0.6. An incremental contribution measured inside a panel displaced that
+far is not evidence about the marker.
+
+The plan originally argued the opposite, and that reasoning was wrong. Section
+5 held that question 1 would be relatively robust to acquisition artefact,
+because a drift affecting the whole panel similarly would largely cancel in a
+comparison between metabolites from the same run. The premise fails: the panel
+is affected heterogeneously, with univariate discrimination ranging from
+chance to well above 0.9. Under heterogeneous drift one metabolite outperforms
+another by being more sensitive to it, not by being more informative. The
+correction is recorded in the departures section of the plan rather than
+absorbed silently, and the verdict is reported unchanged with the
+qualification attached.
+
+This coupling is enforced in code. A single constructor builds the question 1
+statement, the panel context is a required argument with no default, and a
+test asserts no second code path can emit the difference without it.
+
+## 6. The question 3 finding
+
+The deposit contains no batch identifier, no run order, no injection sequence
+and no acquisition date. Sample identifiers are perfectly ordered by outcome.
+Consequently, if the samples were acquired in the order deposited, instrument
+drift over the run is aligned with the outcome and cannot be distinguished
+from biological signal; and because no batch metadata exists, that possibility
+can neither be tested directly nor adjusted for.
+
+This is a statement about what the public artefact contains. It is not a claim
+about the competence or conduct of anyone who produced, analysed or deposited
+the data. Batch metadata is routinely absent from deposits, the reporting
+conventions for metabolomics have changed over time, and the finding here is
+about what a reader can verify from the public record, not about what was done
+in the laboratory.
+
+The practical consequence is symmetrical and worth stating plainly. Order
+structure being detected does not establish that the reported signal is
+artefactual. Had it not been detected, that would not have established the
+signal was biological either, since the deposited ordering need not be the
+acquisition ordering. The deposit does not contain what would be needed to
+settle it in either direction. That is the finding.
+
+## 7. What this chapter found
+
+This chapter's finding is about how to check a claim, not about TMAO.
+
+## Reproducing
+
+Python 3.10 or later, under either resolver.
+
+```bash
+conda env create -f environment.yml && conda activate tmao-cvd   # conda
+python -m pip install -r requirements.txt                        # pip
+
+python scripts/run_reanalysis.py    # downloads the deposit, runs all three questions
+python scripts/audit_readme.py      # verifies every figure above against results/metrics
+python -m pytest tests/             # test suite
+```
+
+The deposit is downloaded to `data/raw/`, which is not tracked. Generated
+figures and tables are not tracked either, since they are reproducible from
+the code and the recorded seed. `results/metrics/` is the exception and is
+tracked, because it is the audit trail for this document.
 
 ## Layout
 
@@ -109,138 +241,30 @@ decision curve carries more weight in interpretation.
 .
 ├── .github/workflows/      test suite run on every push
 ├── config/                 analysis settings kept outside the code
-├── data/
-│   ├── raw/                cohort export, never committed
-│   ├── interim/            intermediate files, disposable
-│   └── processed/          analysis ready tables, disposable
+├── data/                   cohort files, never committed
 ├── docs/
-│   ├── analysis_plan.md    the prespecified statistical analysis plan
-│   └── data_dictionary.md  column names, units and accepted ranges
-├── results/
-│   ├── figures/            generated figures
-│   └── tables/             generated tables and the run manifest
-├── scripts/
-│   └── run_analysis.py     command line entry point
-├── src/tmao_cvd/
-│   ├── config.py           paths, seeds and resampling settings
-│   ├── simulate.py         synthetic cohort generator
-│   ├── data.py             loading and schema validation
-│   ├── features.py         transformations and feature sets
-│   ├── models.py           model specifications and resampling
-│   ├── evaluate.py         discrimination, calibration, utility
-│   ├── figures.py          the three reporting figures
-│   └── pipeline.py         orchestration
-├── tests/                  unit and end to end tests
-├── environment.yml         conda environment
-└── requirements.txt        pip dependencies
+│   ├── analysis_plan.md            the original pre-specified plan
+│   ├── reanalysis_plan.md          the plan governing this chapter
+│   ├── data_dictionary.md          schema for the original question
+│   └── data_dictionary_st001420.md schema for the deposit
+├── results/metrics/        machine readable summary, tracked
+├── scripts/                entry points and the README audit
+├── src/tmao_cvd/           the package
+└── tests/                  unit, integration and guard tests
 ```
 
-## Installation
-
-Python 3.10 or later, under either resolver. Pick one and stay with it,
-since mixing conda and pip in a single environment is a reliable way to
-produce a build that works on one machine and nowhere else.
-
-```bash
-conda env create -f environment.yml && conda activate tmao-cvd   # conda
-python -m pip install -r requirements.txt                        # pip
-```
-
-## Running
-
-```bash
-python scripts/run_analysis.py          # full analysis
-python scripts/run_analysis.py --help   # seed, repeats, bootstrap, cohort path
-python -m pytest tests/                 # test suite
-```
-
-A run takes about fifteen seconds on a laptop and writes four tables, three
-figures and a manifest recording the seed, the software versions and the
-data provenance behind them.
-
-## What a simulated run should reproduce
-
-With the default seed, the pipeline reports a baseline area under the curve
-of 0.753 and an extended area of 0.762, a difference of 0.009 with a DeLong
-p value of 0.013. These figures are useful only for checking that an
-installation behaves as expected. They are properties of the simulator.
-
-## Testing
-
-Thirty eight tests cover the statistics and the joins between stages.
-GitHub Actions runs them on Python 3.10, 3.11 and 3.12 on every push, and
-then runs the analysis end to end, because a passing suite does not by
-itself prove the pipeline still executes.
-
-Three are worth singling out:
-
-The area under the curve and its variance are implemented here rather than
-taken from a library, because the paired DeLong comparison is not available
-in scikit-learn. The implementation is checked against `roc_auc_score` for
-agreement to nine decimal places, and separately on the tied case, since
-midranks only matter when predictions tie.
-
-`tests/test_recovery.py` fits the whole chain to a large synthetic cohort
-and asserts that every planted log odds ratio comes back within 0.05. This
-catches the class of error that unit tests miss: a transformation applied
-twice, a feature set assembled from the wrong columns, a scaler fitted on
-the wrong axis. Each of those leaves the individual functions correct and
-the analysis wrong.
-
-`tests/test_config.py` holds `config/analysis_config.yaml` to the dataclass in
-`src/tmao_cvd/config.py`. The YAML file exists so a reader can see how a run
-was configured without reading Python, and that convenience creates the hazard
-of two records of the same numbers drifting apart, with the written one being
-the record a reader trusts. The dataclass stays the single source of truth for
-what executes, and the test makes divergence impossible to miss.
-
-## Reproducibility
-
-Every stochastic step draws from a single seed recorded in
-`src/tmao_cvd/config.py` and written into `results/tables/run_manifest.json`
-alongside the library versions and the data provenance. Generated outputs
-are not committed, since they are reproducible from the code and the seed,
-and a stale figure in version control is worse than no figure at all.
-
-## Limitations
-
-The outcome is modelled as a binary indicator at three years. If a real
-cohort carries meaningful loss to follow up this is the wrong tool, and the
-analysis should move to a time to event model with administrative censoring.
-
-Missing values are imputed at the median within each training fold, which is
-adequate only for a small proportion of missingness unrelated to the
-outcome. Beyond roughly ten per cent, median imputation understates the
-uncertainty and multiple imputation is needed.
-
-The DeLong confidence interval uses the normal approximation on the area
-scale, which becomes conservative as the area approaches one.
-
-Cross validation estimates how well this modelling procedure performs on
-data drawn from the same population. It says nothing about transportability
-to a different setting, which requires external validation.
-
-## References
+## Related reading
 
 Collins GS, Reitsma JB, Altman DG, Moons KGM. Transparent reporting of a
-multivariable prediction model for individual prognosis or diagnosis
-(TRIPOD). Annals of Internal Medicine. 2015;162(1):55-63.
+multivariable prediction model for individual prognosis or diagnosis (TRIPOD).
+Annals of Internal Medicine. 2015;162(1):55-63.
 
-DeLong ER, DeLong DM, Clarke-Pearson DL. Comparing the areas under two or
-more correlated receiver operating characteristic curves: a nonparametric
-approach. Biometrics. 1988;44(3):837-845.
+DeLong ER, DeLong DM, Clarke-Pearson DL. Comparing the areas under two or more
+correlated receiver operating characteristic curves: a nonparametric approach.
+Biometrics. 1988;44(3):837-845.
 
 Hlatky MA, Greenland P, Arnett DK, et al. Criteria for evaluation of novel
-markers of cardiovascular risk: a scientific statement from the American
-Heart Association. Circulation. 2009;119(17):2408-2416.
-
-Koeth RA, Wang Z, Levison BS, et al. Intestinal microbiota metabolism of
-L-carnitine, a nutrient in red meat, promotes atherosclerosis. Nature
-Medicine. 2013;19(5):576-585.
-
-Pencina MJ, D'Agostino RB Sr, D'Agostino RB Jr, Vasan RS. Evaluating the
-added predictive ability of a new marker: from area under the ROC curve to
-reclassification and beyond. Statistics in Medicine. 2008;27(2):157-172.
+markers of cardiovascular risk. Circulation. 2009;119(17):2408-2416.
 
 Pencina MJ, D'Agostino RB Sr, Steyerberg EW. Extensions of net
 reclassification improvement calculations to measure usefulness of new
@@ -250,30 +274,13 @@ Steyerberg EW, Vickers AJ, Cook NR, et al. Assessing the performance of
 prediction models: a framework for traditional and novel measures.
 Epidemiology. 2010;21(1):128-138.
 
-Sun X, Xu W. Fast implementation of DeLong's algorithm for comparing the
-areas under correlated receiver operating characteristic curves. IEEE Signal
+Sun X, Xu W. Fast implementation of DeLong's algorithm for comparing the areas
+under correlated receiver operating characteristic curves. IEEE Signal
 Processing Letters. 2014;21(11):1389-1393.
-
-Tang WHW, Wang Z, Levison BS, et al. Intestinal microbial metabolism of
-phosphatidylcholine and cardiovascular risk. New England Journal of
-Medicine. 2013;368(17):1575-1584.
-
-Tang WHW, Wang Z, Kennedy DJ, et al. Gut microbiota-dependent trimethylamine
-N-oxide (TMAO) pathway contributes to both development of renal insufficiency
-and mortality risk in chronic kidney disease. Circulation Research.
-2015;116(3):448-455.
 
 Vickers AJ, Elkin EB. Decision curve analysis: a novel method for evaluating
 prediction models. Medical Decision Making. 2006;26(6):565-574.
 
-Wang Z, Klipfell E, Bennett BJ, et al. Gut flora metabolism of
-phosphatidylcholine promotes cardiovascular disease. Nature.
-2011;472(7341):57-63.
-
-## Citing
-
-Citation metadata is in [CITATION.cff](CITATION.cff).
-
-## License
+## Licence
 
 MIT. See [LICENSE](LICENSE).
