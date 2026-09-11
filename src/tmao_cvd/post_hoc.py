@@ -115,9 +115,10 @@ def pathway_position_in_panel(auc: pd.Series) -> pd.DataFrame:
 def total_intensity_discrimination(frame: pd.DataFrame) -> pd.DataFrame:
     """Does the crude sum of all signal separate the groups?
 
-    A panel-wide intensity difference cannot plausibly be a disease signature.
-    It is what differing sample handling, extraction or instrument state
-    between two sets of samples looks like.
+    A panel-wide intensity difference is difficult to read as a disease
+    signature. It is consistent with differing sample handling, extraction or
+    instrument state between two sets of samples, which is a limit of what this
+    deposit can settle rather than a fault in it.
     """
 
     metabolites = [m for m in metabolite_columns(frame) if frame[m].notna().all()]

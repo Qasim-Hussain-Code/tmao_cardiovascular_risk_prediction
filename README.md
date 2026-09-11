@@ -199,23 +199,46 @@ drift over the run is aligned with the outcome and cannot be distinguished
 from biological signal; and because no batch metadata exists, that possibility
 can neither be tested directly nor adjusted for.
 
-This is a statement about what the public artefact contains. It is not a claim
-about the competence or conduct of anyone who produced, analysed or deposited
-the data. Batch metadata is routinely absent from deposits, the reporting
-conventions for metabolomics have changed over time, and the finding here is
-about what a reader can verify from the public record, not about what was done
-in the laboratory.
+This is a limit of what this particular dataset can tell us, not a flaw unique
+to it. Like many public deposits, it does not include the laboratory processing
+order alongside the results. Without that, there is no way to fully rule out
+that something about how the two groups were handled, rather than their
+biology, is doing some of the work. Batch metadata is routinely absent from
+deposits of this vintage, and the finding here is about what a reader can
+verify from the public record rather than about what was done in the
+laboratory. It is not a claim about anyone who produced, analysed or deposited
+the data.
 
-The practical consequence is symmetrical and worth stating plainly. Order
-structure being detected does not establish that the reported signal is
+The consequence is symmetrical, and worth stating plainly in both directions.
+Order structure being detected does not establish that the signal is
 artefactual. Had it not been detected, that would not have established the
 signal was biological either, since the deposited ordering need not be the
-acquisition ordering. The deposit does not contain what would be needed to
-settle it in either direction. That is the finding.
+acquisition ordering. The deposit does not contain what would settle it either
+way. That is the finding.
 
 ## 7. What this chapter found
 
 This chapter's finding is about how to check a claim, not about TMAO.
+
+## The chapter as published
+
+The seven posts that make up this chapter are in [posts/](posts/), committed
+verbatim as published.
+
+| Post | Subject |
+| --- | --- |
+| [day47.txt](posts/day47.txt) | The pathway, and the question the chapter opened with |
+| [day48.txt](posts/day48.txt) | Why the gene does not follow the family tree |
+| [day49.txt](posts/day49.txt) | The rule, written before anything was downloaded |
+| [day50.txt](posts/day50.txt) | Four ways the plan could be wrong |
+| [day51.txt](posts/day51.txt) | Why a support vector machine, and what the kernel does |
+| [day52.txt](posts/day52.txt) | The pivot, stated publicly, and the narrower question |
+| [day53.txt](posts/day53.txt) | The two results, and why the second is the one to trust |
+
+Days 47 to 51 set out a study of gut metagenomic gene abundances that the
+public data could not support. Day 52 states the pivot in public rather than
+absorbing it quietly, and the work in this repository implements what that post
+describes. The original question is not answered here and remains open.
 
 ## Reproducing
 
@@ -284,3 +307,20 @@ prediction models. Medical Decision Making. 2006;26(6):565-574.
 ## Licence
 
 MIT. See [LICENSE](LICENSE).
+
+## Chapter status
+
+**Chapter 5 is closed.** The seven posts that constitute it, days 47 to 53, are
+in `posts/`, committed verbatim as published. The code, both pre-registered
+plans, the departures record and the metrics are all present in this
+repository. Every figure in this document is verified against
+`results/metrics/00_summary.json` by `scripts/audit_readme.py`, which passes 50
+of 50 with no failures. The test suite passes 78 of 78, including the guards
+that prevent the question 1 difference being cited without its panel context
+and the question 3 null being emitted without its limitation. Nothing is
+awaiting a further run, and no figure in this document is transcribed rather
+than traced.
+
+The original question, whether TMAO adds predictive value to a conventional
+cardiovascular risk model in primary prevention, is not answered here and
+remains open. The data required is not public.
