@@ -318,23 +318,3 @@ prediction models. Medical Decision Making. 2006;26(6):565-574.
 ## Licence
 
 MIT. See [LICENSE](LICENSE).
-
-## Chapter status
-
-**Chapter 5 is closed.** The seven posts that constitute it, days 47 to 53, are
-in `posts/`, committed verbatim as published. The code, both pre-registered
-plans, the departures record and the metrics are all present in this
-repository. Every figure in this document is verified against
-`results/metrics/00_summary.json` by `scripts/audit_readme.py`, which passes 50
-of 50 with no failures. The test suite is 78 tests, all passing once the
-deposit has been downloaded; in a fresh clone 71 pass and 7 skip, because the
-integration tests that need the deposit skip rather than fail when it is
-absent. Those 78 include the guards that prevent the question 1 difference
-being cited without its panel context and the question 3 null being emitted
-without its limitation. Nothing is
-awaiting a further run, and no figure in this document is transcribed rather
-than traced.
-
-The original question, whether TMAO adds predictive value to a conventional
-cardiovascular risk model in primary prevention, is not answered here and
-remains open. The data required is not public.
