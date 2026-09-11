@@ -280,5 +280,52 @@ the data informed them.
 3. Section 7 gained the requirement that the scope statement is emitted by the
    reporting code rather than documented here.
 
-No further departures to date. Any change made after the first estimate is
-produced is to be recorded here with its date and reason.
+**Departures recorded on 11 September 2026, after the first estimates were
+produced.** These are post hoc and are labelled as such wherever they appear.
+
+1. **Question 2's partial branch was written for only one of the two ways of
+   reaching it.** The plan describes it as values falling between 0.75 and
+   0.85. What actually occurred was discrimination far above the reproduction
+   floor with a calibration slope of 3.458, far above the acceptable band. The
+   verdict label is unchanged, because the decision rule in the code behaved
+   exactly as written. The sentence attached to it was factually wrong for this
+   case and has been corrected to distinguish the two routes. The thresholds
+   themselves were not touched.
+
+2. **Post hoc diagnostics were added**, in `src/tmao_cvd/post_hoc.py`, prompted
+   by question 2 returning an out of fold area under the curve of exactly 1.000
+   on 750 participants. None was pre-specified. Reporting that figure as a
+   performance result and moving on would have been the more serious failure.
+
+3. **The reasoning in section 5 about question 1 was wrong, and this is the
+   most important correction here.** Section 5 argued that question 1 was
+   "relatively robust" to acquisition artefact because a drift affecting the
+   whole panel similarly would largely cancel in a comparison between
+   metabolites measured in the same run. The premise fails. The post hoc
+   diagnostics show the panel is affected heterogeneously, with univariate
+   discrimination ranging from chance to 0.98 across metabolites, a median of
+   0.685 where the null is 0.5, and 76.5 per cent of the panel discriminating
+   above 0.6. Under heterogeneous drift, one metabolite can outperform another
+   simply by being more sensitive to it.
+
+   The consequence is that **question 1's POSITIVE verdict stands as computed
+   and pre-specified, but cannot be read as evidence that TMAO carries
+   biological information about recurrent angina.** TMAO sits at the 64th
+   percentile of the panel with 144 of 405 metabolites ranking above it, and
+   betaine, one of its own precursors, discriminates better than it does. An
+   incremental contribution measured inside a globally shifted panel is not
+   evidence of biology. The verdict is reported unchanged, with this
+   qualification attached to it, rather than being quietly revised.
+
+4. **A defect in the panel definition was found and fixed after the first run.**
+   `metabolite_columns` excluded the outcome and the sample index but not the
+   four derived log transforms, so question 2 ran on 604 columns in which four
+   metabolites appeared twice, once raw and once logged. The post hoc
+   missingness table reporting 604 rather than 600 metabolites is what exposed
+   it. Question 1 was unaffected, since it never uses the panel, and its
+   estimates are identical before and after. Question 2's calibration slope
+   moved from 3.458 to 2.971 and its verdict was unchanged. A regression test
+   now asserts the panel is exactly 600 columns.
+
+Any further change made after this point is to be recorded here with its date
+and reason.
