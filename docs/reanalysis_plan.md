@@ -50,9 +50,10 @@ No multivariable result of any kind has been seen.
 
 ## 3. The dataset
 
-Metabolomics Workbench study ST001420, deposited under project PR000974 by
-Cui and colleagues at the University of California, San Diego, released 30
-July 2020 under CC BY 4.0.
+A public Metabolomics Workbench deposit, accession ST001420, released in July
+2020 under CC BY 4.0. The accession is retained throughout because the analysis
+must be reproducible against a specific artefact; the depositing group is not
+named anywhere in this repository, and nothing here is a comment on them.
 
 | Property | Value |
 | --- | --- |
@@ -75,13 +76,13 @@ partly handled here by design, because patients with substantially impaired
 renal function were not enrolled. The corollary is that this dataset cannot be
 used to study the TMAO and renal function relationship at all.
 
-The associated publication is Cui et al., Advanced Science, 2021. That paper
-reports a multi-metabolite model achieving above 89 per cent accuracy,
-sensitivity and specificity across three cohorts. Only the first cohort, the
-750 participants analysed here, was deposited. The second discovery cohort of
-775 and the validation cohort of 130 were not, so no external validation is
-possible from public data, and no one outside the original group has been in a
-position to check the reported performance.
+A performance figure of above 89 per cent accuracy, sensitivity and
+specificity has previously been reported for a multi-metabolite model developed
+across three cohorts, of which this deposit is one. The other two were not
+deposited. The consequence is a property of the public record rather than of
+anyone's conduct: external validation cannot be performed from public data, and
+the deposited artefact alone does not carry what would be needed to interpret
+that figure.
 
 ## 4. Hard constraint: measurement scale
 
@@ -172,7 +173,7 @@ Fixed in advance:
   separate. Conclusion: a statistically detectable but clinically negligible
   contribution. The decision curve governs the wording.
 
-### Question 2, replication. Does the published discrimination survive honest validation?
+### Question 2, replication. What does the deposited panel support under honest validation?
 
 Model: L2 penalised logistic regression on all 600 metabolites, with the
 penalty selected inside each training fold by nested cross validation so that
@@ -181,8 +182,8 @@ Reported: out of fold accuracy, sensitivity and specificity at the threshold
 maximising the Youden index, plus area under the curve, calibration intercept
 and slope.
 
-The published claim is above 89 per cent on all three of accuracy,
-sensitivity and specificity. Fixed in advance:
+The previously reported figure for this deposit is above 89 per cent on all
+three of accuracy, sensitivity and specificity. Fixed in advance:
 
 - **Reproduced.** Out of fold accuracy, sensitivity and specificity are all at
   or above 0.85, and the calibration slope lies between 0.80 and 1.25.
@@ -191,9 +192,10 @@ sensitivity and specificity. Fixed in advance:
 - **Collapsed.** Any one of the three falls below 0.75, or the calibration
   slope falls below 0.70. Conclusion: the reported performance does not
   survive out of fold evaluation on the deposited cohort. **This is the
-  finding, and it will be reported as plainly and as prominently as a positive
-  result, and specifically will not be softened because it disagrees with a
-  published paper.**
+  finding, and it will be reported as plainly and as prominently as a
+  confirmation would have been, and specifically will not be softened for being
+  the less comfortable outcome.** It is a statement about what the deposited
+  artefact supports, not about anyone who produced or deposited it.
 - **Partial.** Values fall between 0.75 and 0.85 with acceptable calibration.
   The numbers are reported with no verdict attached, and the gap from the
   published figures is stated without interpretation.

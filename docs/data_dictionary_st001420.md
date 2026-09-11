@@ -5,9 +5,9 @@ simulated cohort and any future dataset with clinical covariates, is in
 [data_dictionary.md](data_dictionary.md). The two are not interchangeable and
 neither loader accepts the other's file.
 
-Source: Metabolomics Workbench study ST001420, project PR000974, deposited by
-Cui and colleagues at the University of California, San Diego. Released 30
-July 2020 under CC BY 4.0. Retrieved by `fetch_mwtab` in
+Source: a public Metabolomics Workbench deposit, accession ST001420, released
+in July 2020 under CC BY 4.0. The depositing group is not named in this
+repository. Retrieved by `fetch_mwtab` in
 `src/tmao_cvd/st001420.py` and written to `data/raw/`, which is not tracked.
 
 ## Measurement scale

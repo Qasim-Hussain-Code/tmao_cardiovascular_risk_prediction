@@ -240,10 +240,12 @@ def _panel_model(seed: int) -> Pipeline:
 
 
 def question_two(frame: pd.DataFrame, config: AnalysisConfig) -> QuestionResult:
-    """Does the published discrimination survive honest out of fold validation?
+    """What does the deposited panel support under honest out of fold validation?
 
-    The published claim is above 89 per cent on accuracy, sensitivity and
-    specificity simultaneously. Note one asymmetry, stated rather than hidden:
+    A figure of above 89 per cent on accuracy, sensitivity and specificity
+    simultaneously has previously been reported for this deposit. What follows
+    tests what the deposited artefact supports, and is not a comment on anyone
+    who produced or deposited it. Note one asymmetry, stated rather than hidden:
     the operating threshold is chosen by maximising the Youden index on the same
     out of fold predictions that are then scored. That is mildly optimistic and
     biases the comparison towards reproducing the published figures, so it makes
@@ -292,9 +294,10 @@ def question_two(frame: pd.DataFrame, config: AnalysisConfig) -> QuestionResult:
             "The published performance does not survive out of fold evaluation on the "
             f"deposited cohort. Accuracy {accuracy:.3f}, sensitivity {sensitivity:.3f}, "
             f"specificity {specificity:.3f}, calibration slope {slope:.3f}, against a "
-            "published claim of above 0.890 on all three. This is the finding. It is "
-            "reported exactly as prominently as a confirmation would have been, and it "
-            "is not softened because it disagrees with a published paper."
+            "previously reported figure of above 0.890 on all three. This is the "
+            "finding. It is reported exactly as prominently as a confirmation would "
+            "have been, and it concerns what the deposited artefact supports rather "
+            "than anyone who produced or deposited it."
         )
     else:
         verdict = "PARTIAL"
@@ -321,7 +324,7 @@ def question_two(frame: pd.DataFrame, config: AnalysisConfig) -> QuestionResult:
             f"Accuracy {accuracy:.3f}, sensitivity {sensitivity:.3f}, specificity "
             f"{specificity:.3f}, calibration slope {slope:.3f}. {reason} Per the plan "
             "the numbers are reported with no verdict attached, and the gap from the "
-            "published figure of above 0.890 on all three is stated without "
+            "previously reported figure of above 0.890 on all three is stated without "
             "interpretation."
         )
 
@@ -346,7 +349,7 @@ def question_two(frame: pd.DataFrame, config: AnalysisConfig) -> QuestionResult:
     )
 
     return QuestionResult(
-        question="QUESTION 2 (replication). Does the published discrimination survive?",
+        question="QUESTION 2 (replication). What does the deposited panel support?",
         verdict=verdict,
         statement=statement,
         table=table,

@@ -1,4 +1,4 @@
-"""Loader for Metabolomics Workbench study ST001420.
+"""Loader for a public Metabolomics Workbench deposit, accession ST001420.
 
 The study is described in section 3 of docs/reanalysis_plan.md. In short: 750
 patients with stable angina, sampled 48 hours after percutaneous coronary
