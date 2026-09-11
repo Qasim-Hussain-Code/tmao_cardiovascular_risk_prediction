@@ -80,6 +80,20 @@ point may be applied to them; this is enforced by an exception in
 identifiers are perfectly ordered by outcome, with no batch identifier, run
 order or acquisition date deposited.
 
+### The analysis at a glance
+
+![Workflow of the reanalysis: the public deposit and what it omits on the left,
+the six pipeline stages through validation, the three pre-specified questions
+and reporting in the centre, and the summary file, verdict report, per question
+tables and audit result on the right. The post hoc diagnostics branch off
+question two.](docs/figures/workflow_diagram.jpeg)
+
+The post hoc diagnostics hang off question two as a branch rather than sitting
+in the numbered sequence. That is deliberate, and it is the honest shape of
+what happened: they were triggered by a result, not planned before one existed.
+The distinction is preserved in the code layout and in the output tables as
+well as in this diagram.
+
 ## 4. The pre-specified questions and their verdicts
 
 Two substantive questions and one diagnostic, each with its verdict decided by
@@ -269,7 +283,8 @@ tracked, because it is the audit trail for this document.
 │   ├── analysis_plan.md            the original pre-specified plan
 │   ├── reanalysis_plan.md          the plan governing this chapter
 │   ├── data_dictionary.md          schema for the original question
-│   └── data_dictionary_st001420.md schema for the deposit
+│   ├── data_dictionary_st001420.md schema for the deposit
+│   └── figures/                    the workflow diagram
 ├── results/metrics/        machine readable summary, tracked
 ├── scripts/                entry points and the README audit
 ├── src/tmao_cvd/           the package

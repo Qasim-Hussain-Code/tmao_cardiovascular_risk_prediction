@@ -3,3 +3,5 @@
 *.md text
 *.csv text
 *.png binary
+*.jpeg binary
+*.jpg binary
