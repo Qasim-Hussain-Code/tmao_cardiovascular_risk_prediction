@@ -315,9 +315,12 @@ in `posts/`, committed verbatim as published. The code, both pre-registered
 plans, the departures record and the metrics are all present in this
 repository. Every figure in this document is verified against
 `results/metrics/00_summary.json` by `scripts/audit_readme.py`, which passes 50
-of 50 with no failures. The test suite passes 78 of 78, including the guards
-that prevent the question 1 difference being cited without its panel context
-and the question 3 null being emitted without its limitation. Nothing is
+of 50 with no failures. The test suite is 78 tests, all passing once the
+deposit has been downloaded; in a fresh clone 71 pass and 7 skip, because the
+integration tests that need the deposit skip rather than fail when it is
+absent. Those 78 include the guards that prevent the question 1 difference
+being cited without its panel context and the question 3 null being emitted
+without its limitation. Nothing is
 awaiting a further run, and no figure in this document is transcribed rather
 than traced.
 
