@@ -1,0 +1,18 @@
+Machine Learning for Biology | Day 53
+Chapter 5: Gut Bacteria and Cardiovascular Risk
+
+Chapter 5 ends here, with two results.
+
+Result one. Adding TMAO to a model of its own three building blocks, choline, betaine, and carnitine, raised the score from 0.848 to 0.873 at predicting who would have chest pain again. A real improvement.
+
+Result two, and the one I trust more. A model built from all 600 substances in this dataset came back nearly perfect, and for a hard clinical question, that is usually a sign to look closer rather than celebrate. Looking closer: a large share of the panel, not just TMAO, could separate the two patient groups on its own. This is a public dataset, and like many public deposits, it does not include the lab processing order alongside the results. Without that, there is no way to fully rule out that something about how the two groups were handled, rather than their biology, is doing some of the work. That is a limit of what this particular dataset can tell us.
+
+Seen against that backdrop, the TMAO number needs a caveat. Ranked against the other 404 substances measured, TMAO comes in around the 64th percentile, behind roughly 144 others, including betaine, one of its own ingredients. The result is exactly what I said in advance I would report. It just cannot be read as strong evidence about TMAO specifically, given what this dataset can and cannot rule out.
+
+Both things are true, and both are worth saying.
+
+The original question, whether TMAO helps predict heart disease risk in healthy people, stays open. That data is not public, and I am not chasing it further.
+
+Code, the pre-registered rules, and every number here are in the repository.
+
+#MachineLearningForBiology #MachineLearning #ArtificialIntelligence #Bioinformatics #CardioVascular #Microbiome

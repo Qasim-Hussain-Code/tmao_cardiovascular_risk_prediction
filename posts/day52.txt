@@ -1,0 +1,16 @@
+Machine Learning for Biology | Day 52
+Chapter 5: Gut Bacteria and Cardiovascular Risk
+
+This is not a result about TMAO. It is a result about a dataset, and it changes the question this chapter is asking.
+
+The plan was to see whether TMAO, a gut-bacteria byproduct, helps predict cardiovascular risk on top of everything doctors already check. The data to answer that directly is not public. The studies that have it keep it locked behind institutional approval, and that can take months with no guarantee of a yes. I am not chasing that any further.
+
+Instead I found something smaller but real: a public dataset of 750 patients, all recently treated for a heart procedure, followed for nine months to see who had chest pain again. It measured TMAO and the three things TMAO is made from, choline, betaine, and carnitine, in every single patient, no gaps.
+
+This dataset cannot answer the original question. It has no medical history, no other risk factors, nothing for TMAO to add value on top of. And the patients here already had heart problems, so this is not about predicting a first heart attack in a healthy person.
+
+What it can answer: does TMAO carry any extra information beyond the three ingredients it is built from. And separately, since every patient also had 600 other substances measured: does a model built on all of that actually hold up when tested properly, or does it only look good on paper.
+
+Both questions were tested, with the rules for judging the answer written down before either test ran. Tomorrow: what came back, and why the more interesting finding is not the one this chapter set out to find.
+
+#MachineLearningForBiology #MachineLearning #ArtificialIntelligence #Bioinformatics #CardioVascular #Microbiome
