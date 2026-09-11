@@ -1,5 +1,7 @@
 # TMAO and cardiovascular risk prediction
 
+[![tests](https://github.com/Qasim-Hussain-Code/tmao_cardiovascular_risk_prediction/actions/workflows/tests.yml/badge.svg)](https://github.com/Qasim-Hussain-Code/tmao_cardiovascular_risk_prediction/actions/workflows/tests.yml)
+
 Analysis code for a single question: does fasting plasma trimethylamine
 N-oxide (TMAO) add predictive value to a cardiovascular risk model that
 already contains the variables a clinician has to hand?
@@ -82,6 +84,7 @@ decision curve carries more weight in interpretation.
 
 ```
 .
+├── .github/workflows/      test suite run on every push
 ├── config/                 analysis settings kept outside the code
 ├── data/
 │   ├── raw/                cohort export, never committed
@@ -104,15 +107,20 @@ decision curve carries more weight in interpretation.
 │   ├── evaluate.py         discrimination, calibration, utility
 │   ├── figures.py          the three reporting figures
 │   └── pipeline.py         orchestration
-└── tests/                  unit and end to end tests
+├── tests/                  unit and end to end tests
+├── environment.yml         conda environment
+└── requirements.txt        pip dependencies
 ```
 
 ## Installation
 
-Python 3.10 or later.
+Python 3.10 or later, under either resolver. Pick one and stay with it,
+since mixing conda and pip in a single environment is a reliable way to
+produce a build that works on one machine and nowhere else.
 
 ```bash
-python -m pip install -r requirements.txt
+conda env create -f environment.yml && conda activate tmao-cvd   # conda
+python -m pip install -r requirements.txt                        # pip
 ```
 
 ## Running
@@ -136,8 +144,12 @@ installation behaves as expected. They are properties of the simulator.
 
 ## Testing
 
-Thirty tests cover the statistics and the joins between stages. The two
-worth singling out:
+Thirty eight tests cover the statistics and the joins between stages.
+GitHub Actions runs them on Python 3.10, 3.11 and 3.12 on every push, and
+then runs the analysis end to end, because a passing suite does not by
+itself prove the pipeline still executes.
+
+Three are worth singling out:
 
 The area under the curve and its variance are implemented here rather than
 taken from a library, because the paired DeLong comparison is not available
@@ -151,6 +163,13 @@ catches the class of error that unit tests miss: a transformation applied
 twice, a feature set assembled from the wrong columns, a scaler fitted on
 the wrong axis. Each of those leaves the individual functions correct and
 the analysis wrong.
+
+`tests/test_config.py` holds `config/analysis_config.yaml` to the dataclass in
+`src/tmao_cvd/config.py`. The YAML file exists so a reader can see how a run
+was configured without reading Python, and that convenience creates the hazard
+of two records of the same numbers drifting apart, with the written one being
+the record a reader trusts. The dataclass stays the single source of truth for
+what executes, and the test makes divergence impossible to miss.
 
 ## Reproducibility
 
