@@ -112,3 +112,16 @@ def test_log_transform_is_exact_and_non_destructive(cohort):
     assert np.allclose(np.exp(derived["log_tmao"]), derived[TMAO])
     for feature in EXTENDED_FEATURES:
         assert feature in derived.columns
+
+
+def test_derived_log_columns_are_not_counted_as_panel_metabolites(cohort):
+    # Regression test. The log transforms are transforms of metabolites already
+    # in the panel, so counting them would feed the same measurement to a model
+    # twice under two names, and would silently inflate the panel to 604.
+    frame, _ = cohort
+    derived = add_log_pathway_features(frame)
+    columns = metabolite_columns(derived)
+    assert len(columns) == 600
+    for name in ["log_tmao", "log_choline", "log_betaine", "log_carnitine"]:
+        assert name in derived.columns
+        assert name not in columns

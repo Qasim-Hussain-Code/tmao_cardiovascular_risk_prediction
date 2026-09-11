@@ -203,14 +203,26 @@ def _validate(frame: pd.DataFrame, metabolites: list[str]) -> None:
     assert_peak_area_scale(frame, PATHWAY, SCALE)
 
 
-def metabolite_columns(frame: pd.DataFrame) -> list[str]:
-    """The 600 metabolite columns, excluding the outcome and the sample index.
+#: Columns added by :func:`add_log_pathway_features`. They are transforms of
+#: metabolites already in the panel, so counting them as panel members would
+#: feed the same measurement to a model twice.
+DERIVED_COLUMNS = ("log_tmao",) + tuple(f"log_{p.lower()}" for p in PRECURSORS)
 
-    Kept as a function rather than a constant so that ``sample_index`` cannot
-    reach a model by being left in a hand written column list.
+#: Everything that is not a deposited metabolite measurement.
+NON_PANEL_COLUMNS = (OUTCOME, SAMPLE_INDEX) + DERIVED_COLUMNS
+
+
+def metabolite_columns(frame: pd.DataFrame) -> list[str]:
+    """The 600 deposited metabolite columns.
+
+    Excludes the outcome, the sample index and the derived log transforms.
+    Kept as a function rather than a constant for two reasons: ``sample_index``
+    encodes the outcome perfectly and must never reach a model, and the derived
+    columns are transforms of metabolites already present, so including them
+    would hand the same measurement to a model twice under two names.
     """
 
-    return [c for c in frame.columns if c not in (OUTCOME, SAMPLE_INDEX)]
+    return [c for c in frame.columns if c not in NON_PANEL_COLUMNS]
 
 
 def add_log_pathway_features(frame: pd.DataFrame) -> pd.DataFrame:
