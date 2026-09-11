@@ -1,0 +1,36 @@
+Machine Learning for Biology | Day 49
+Chapter 5: Gut Bacteria and Cardiovascular Risk
+
+Here is the rule, written before anything is downloaded.
+
+The data must be shotgun metagenomics, not 16S. Yesterday's post is the reason. If cutC is patchily distributed inside genera, genus abundance is a broken proxy for the pathway. I would be measuring the wrong thing carefully.
+
+If no suitable shotgun cohort with cardiovascular outcomes exists in public data, this chapter reports that and stops. It does not fall back to 16S.
+
+The features are gene abundances, not taxa. cutC and cutD for choline. cntA and cntB for carnitine. yeaW and yeaX, which do the same job by a different route. Normalised to total reads, so a deeper-sequenced sample does not look like a sicker one.
+
+Nothing else goes in. No age, no cholesterol, no blood pressure. The question is what the pathway alone can carry. Adding a clinical panel answers a different and much easier question.
+
+The outcome is atherosclerotic cardiovascular disease, present or absent, taken from the cohort's own clinical labels. I decide what counts as a case before I see how many cases there are.
+
+The split is by person, not by sample.
+
+Some cohorts collect several stool samples from the same individual. Every sample from one person goes on the same side, train or test, never both.
+
+Otherwise the model meets that person in training, recognises them again in the test set, and scores well without having learned anything about the pathway.
+
+The metric is area under the ROC curve. It answers one question. Pick one patient with disease and one without, at random. Does the model give the sick one a higher score?
+
+At 0.5 it is guessing. At 1.0 it is always right.
+
+Every score comes with a confidence interval. A number built from a few hundred people has a range around it, and hiding that range would flatter the result.
+
+The bar to beat is deliberately unglamorous. Add all six TMA-lyase genes together into a single number, total pathway abundance, and classify on that alone.
+
+If six separate gene abundances cannot beat that single summed number, the useful signal is just how much pathway is present. Which genes, and in what proportion, would be adding nothing.
+
+That is a real result, not a failed chapter, and it would be the headline.
+
+Tomorrow: four ways this could go wrong, written down before I know which ones do.
+
+#MachineLearningForBiology #MachineLearning #ArtificialIntelligence #Bioinformatics #CardioVascular #Microbiome

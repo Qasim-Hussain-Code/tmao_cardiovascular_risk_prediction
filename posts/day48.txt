@@ -1,0 +1,32 @@
+Machine Learning for Biology | Day 48
+Chapter 5: Gut Bacteria and Cardiovascular Risk
+
+The enzyme is not the organism.
+
+Yesterday I said the plan was to give the model the abundance of bacteria known to carry TMA-lyase. That sentence hides a problem, and the problem is the whole chapter.
+
+The gene for choline TMA-lyase is called cutC. It does not follow the family tree.
+
+Two genera carry it in every sequenced genome, Desulfosporosinus and Proteus. Almost nothing else does.
+
+Four per cent of Escherichia coli genomes carry a cutC homologue. The other ninety six per cent do not.
+
+Same genus. Same name in your results table. One in twenty five can actually perform the reaction.
+
+The gene spread by horizontal transfer, passed sideways between organisms rather than inherited down a lineage. It turns up in patches across at least a hundred genera. It is absent from most members of most of them.
+
+Which means the obvious approach does not work.
+
+Most public microbiome data is 16S sequencing. It reads one marker gene and tells you which genera are present, and in what proportion. It does not tell you which genes those organisms carry.
+
+If I hand a model the abundance of a genus that sometimes carries cutC, I am not handing it the pathway. I am handing it a proxy for a proxy.
+
+How good a proxy depends on what fraction of that genus carries the gene in that particular person's gut. 16S cannot measure that fraction.
+
+There is a second kind of data that can. Shotgun metagenomics sequences everything. It lets you count cutC directly, as a gene, regardless of which organism carries it.
+
+Those are two different experiments with two different ceilings, and choosing between them is the first thing this chapter has to decide in public.
+
+Tomorrow: the rule, written down before any data is downloaded.
+
+#MachineLearningForBiology #MachineLearning #ArtificialIntelligence #Bioinformatics #CardioVascular #Microbiome

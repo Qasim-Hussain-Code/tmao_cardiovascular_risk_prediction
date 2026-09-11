@@ -1,0 +1,16 @@
+Machine Learning for Biology | Day 50
+Chapter 5: Gut Bacteria and Cardiovascular Risk
+
+Four ways this could be wrong. Written down before I know which of them is true.
+
+One. Gene presence is not gene expression. A metagenome tells me cutC is there. It does not tell me the organism is transcribing it, or that the enzyme is working, or that TMA is being produced today. Every result here is about capacity, not activity. Those are not the same claim.
+
+Two. The substrate problem, named on Day 47 and still unsolved. A person can carry every gene in the pathway and produce almost no TMAO, if choline and carnitine barely appear in their diet. Without dietary data the model has a ceiling it cannot see past. If the cohort has diet records, I report results with and without them. If it does not, that limitation stays in the headline.
+
+Three. Compositional data. Metagenomic abundances are proportions. They sum to a fixed total, so one gene rising forces every other gene to fall, whether or not anything real changed. Correlations here can be produced entirely by that constraint. I report results on a centred log ratio transform as well as on raw proportions. If the two disagree, the disagreement is the finding.
+
+Four. Cohort geography. Gut microbiome composition varies enormously by population, diet and country. A model trained on one cohort may be detecting where samples came from, not who has disease. If more than one cohort is available, I test across them. If only one is, the result travels no further than that population.
+
+Tomorrow: why a support vector machine, and what the kernel is actually doing here.
+
+#MachineLearningForBiology #MachineLearning #ArtificialIntelligence #Bioinformatics #CardioVascular #Microbiome

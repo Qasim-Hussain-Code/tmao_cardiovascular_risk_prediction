@@ -1,0 +1,24 @@
+Machine Learning for Biology | Day 47
+Chapter 5 begins
+
+Somewhere in your gut, right now, bacteria are doing something no cell in your body can do.
+
+Your own enzymes cannot break the bond between carbon and nitrogen in a choline molecule. Certain gut bacteria carry one that can, a glycyl radical enzyme called TMA-lyase, and they use it constantly, cleaving choline and carnitine from the steak or eggs you ate and releasing a waste gas called trimethylamine.
+
+That gas crosses into your bloodstream and reaches your liver, where a single enzyme, FMO3, oxidises it into trimethylamine N-oxide. TMAO.
+
+From there it does real damage. It pushes macrophages to swallow more cholesterol than they should, turning them into the foam cells that build atherosclerotic plaque. It blocks the pathway that clears cholesterol back out of your arteries. It makes platelets clot more readily than they should. Elevated TMAO is now one of the more consistently replicated predictors of cardiovascular risk in the literature, and it predicts risk independently of cholesterol itself.
+
+Here is the question this chapter asks.
+
+The enzyme is bacterial. The bacteria that carry it are identifiable. If a support vector machine is shown only the abundance of those specific TMA-producing genera, nothing else, no host genetics, no cholesterol panel, can it predict cardiovascular risk from that alone?
+
+Measuring TMAO itself requires mass spectrometry, and almost nobody who could benefit from knowing their risk will ever have it run. The question underneath the question is whether the presence of the machinery that makes TMAO can stand in for measuring TMAO at all.
+
+This is why the model matters as much as the biology. The feature set here is not the whole gut microbiome. It is a short, mechanistically justified list, the handful of genera actually carrying TMA-lyase. Small feature count, a boundary that may curve rather than split cleanly. That is close to the exact problem support vector machines were built to solve.
+
+One limitation, named now rather than discovered later. TMA-lyase only matters if there is substrate to cut. A person can carry every one of these bacteria and still produce almost no TMAO, if choline and carnitine barely appear in what they eat. Without diet data, this model has a hard ceiling on what it can know, and that ceiling is part of the chapter, not a footnote added after the fact.
+
+Chapter 5 starts tomorrow.
+
+#MachineLearningForBiology #MachineLearning #ArtificialIntelligence #Bioinformatics #CardioVascular #Microbiology #Microbiota
