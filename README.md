@@ -29,20 +29,43 @@ This repository implements that assessment.
 
 ## Current status
 
-There are no cohort data here, and none will be committed. What the code
-does today is run end to end against a simulated cohort so that the analysis
-can be written, tested and reviewed before a real dataset arrives.
+Two questions now live in this repository, and they are not the same question.
+The distinction matters enough to state before anything else.
 
-This matters for how the output should be read. Running the pipeline as it
-stands produces plausible looking tables and figures, and every one of them
-is labelled `SIMULATED DATA, not an observed cohort` in the file itself. The
-simulator plants a TMAO effect of its own choosing and the analysis recovers
-it, which demonstrates that the code works. It demonstrates nothing whatever
-about TMAO.
+**The original question**, in [docs/analysis_plan.md](docs/analysis_plan.md),
+asks whether TMAO adds predictive value to a conventional cardiovascular risk
+model for incident major adverse cardiovascular events in primary prevention.
+No public dataset supports it. MESA and the Cardiovascular Health Study hold
+their TMAO measurements behind controlled access, and the TMAO ancillary
+measurements are not part of the standard BioLINCC release. That plan stands
+unchanged, waiting for data.
 
-To run the analysis on real data, put the export at `data/raw/cohort.csv`
-following `docs/data_dictionary.md`. The pipeline uses it automatically and
-the provenance labels change accordingly.
+**A second, narrower question**, in
+[docs/reanalysis_plan.md](docs/reanalysis_plan.md), asks whether TMAO carries
+information beyond its own dietary precursors, in a secondary prevention
+cohort of post-PCI patients with stable angina, of Asian ethnicity, uniformly
+on dual antiplatelet therapy, predicting recurrent angina within nine months.
+Public data does support that one: Metabolomics Workbench study ST001420, 750
+participants and 210 events, released under CC BY 4.0.
+
+This is a scope change, not a refinement. Nothing learned from the second
+question transfers to primary prevention, to hard cardiovascular endpoints, or
+to populations unlike that cohort. The reanalysis plan states the reasoning,
+the limitations and the interpretation of every possible outcome, and it was
+committed before the code it governs was written.
+
+Two constraints on the reanalysis data are worth repeating here because they
+bound what any result can mean. Its values are relative peak areas rather than
+concentrations, so no published cut point may be applied to them, and this is
+enforced by an exception rather than a comment. Its sample identifiers are
+perfectly confounded with outcome, with no batch metadata deposited, so
+acquisition artefact cannot be ruled out.
+
+Running the pipeline on the simulated cohort still produces plausible looking
+tables and figures, and every one of them is labelled `SIMULATED DATA, not an
+observed cohort` in the file itself. The simulator plants a TMAO effect of its
+own choosing and the analysis recovers it, which demonstrates that the code
+works. It demonstrates nothing whatever about TMAO.
 
 ## The comparison
 
