@@ -295,8 +295,8 @@ produced.** These are post hoc and are labelled as such wherever they appear.
    themselves were not touched.
 
 2. **Post hoc diagnostics were added**, in `src/tmao_cvd/post_hoc.py`, prompted
-   by question 2 returning an out of fold area under the curve of exactly 1.000
-   on 750 participants. None was pre-specified. Reporting that figure as a
+   by question 2 returning an out of fold area under the curve of 1.0 on 750
+   participants. None was pre-specified. Reporting that figure as a
    performance result and moving on would have been the more serious failure.
 
 3. **The reasoning in section 5 about question 1 was wrong, and this is the
@@ -304,17 +304,17 @@ produced.** These are post hoc and are labelled as such wherever they appear.
    "relatively robust" to acquisition artefact because a drift affecting the
    whole panel similarly would largely cancel in a comparison between
    metabolites measured in the same run. The premise fails. The post hoc
-   diagnostics show the panel is affected heterogeneously, with univariate
-   discrimination ranging from chance to 0.98 across metabolites, a median of
-   0.685 where the null is 0.5, and 76.5 per cent of the panel discriminating
-   above 0.6. Under heterogeneous drift, one metabolite can outperform another
+   diagnostics show the panel is affected heterogeneously, with a median
+   univariate area under the curve of 0.6852 where the null is 0.5, and a
+   proportion 0.7654 of the panel discriminating above 0.6. Under heterogeneous drift, one metabolite can outperform another
    simply by being more sensitive to it.
 
    The consequence is that **question 1's POSITIVE verdict stands as computed
    and pre-specified, but cannot be read as evidence that TMAO carries
-   biological information about recurrent angina.** TMAO sits at the 64th
-   percentile of the panel with 144 of 405 metabolites ranking above it, and
-   betaine, one of its own precursors, discriminates better than it does. An
+   biological information about recurrent angina.** TMAO has a univariate area
+   under the curve of 0.7404, placing it at the 64.2nd percentile of the 405
+   fully observed metabolites, with 144 ranking above it. Betaine, one of its
+   own precursors, ranks above it at 0.8427. An
    incremental contribution measured inside a globally shifted panel is not
    evidence of biology. The verdict is reported unchanged, with this
    qualification attached to it, rather than being quietly revised.
@@ -328,6 +328,32 @@ produced.** These are post hoc and are labelled as such wherever they appear.
    estimates are identical before and after. Question 2's calibration slope
    moved from 3.458 to 2.971 and its verdict was unchanged. A regression test
    now asserts the panel is exactly 600 columns.
+
+5. **The difference in area is now reported as an interval, not only as a p
+   value.** Section 6 states the question 1 positive branch in terms of a
+   confidence interval on the difference excluding zero, but the first
+   implementation tested the equivalent condition with a p value. The two are
+   algebraically identical, coming from the same DeLong covariance, and a test
+   asserts they agree exactly and never disagree about whether zero is
+   excluded. The interval is now emitted because the plan names it. No verdict
+   changed.
+
+6. **Named attribution was removed and the framing of questions 2 and 3 was
+   revised, on 11 September 2026.** The depositing group, the associated
+   publication and its journal are no longer named anywhere in this
+   repository, and the language around the question 2 and question 3 results
+   was rewritten to describe properties of the deposited artefact rather than
+   to read as a judgement on anyone who produced, analysed or deposited the
+   data. This is an editorial change only. No threshold, no decision rule and
+   no verdict was altered, and every figure is unchanged. It is recorded here
+   because it edits a pre-registration after the fact, which should never
+   happen silently even when the edit is not statistical.
+
+7. **Enforcement was added for the question 1 figure**, mirroring the
+   mechanism already protecting the question 3 null. A single constructor
+   builds the question 1 statement, its panel context is a required argument
+   with no default, and a test asserts no second code path can emit the
+   difference in area without that context attached.
 
 Any further change made after this point is to be recorded here with its date
 and reason.
