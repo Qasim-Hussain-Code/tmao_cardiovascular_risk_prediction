@@ -205,18 +205,34 @@ Motivated by section 5, and specified now rather than reached for if question
 
 Within each outcome block separately, so that the analysis is blind to the
 between group difference, the Spearman correlation between sample index and
-log peak area is computed for every metabolite. The distribution of those 600
-correlations is compared against the null expected under random ordering.
+log peak area is computed for every metabolite, on complete pairs, requiring at
+least 30 non-missing values in the block. Under the null of no order structure
+the resulting p values are uniform on the unit interval.
 
-- **Order structure present.** The distribution of within block correlations
-  is materially displaced from the null. Conclusion: acquisition order
-  structure is detectable, and any between group difference in this dataset is
-  confounded with it to an unknown degree. Every other result in this analysis
-  is then reported under that caveat.
-- **No order structure detected.** The distribution is consistent with the
-  null. Conclusion: no evidence of drift along the deposited ordering. This
-  weakens but does not eliminate the concern, since the deposited order may
-  not be the acquisition order.
+"Materially displaced" is operationalised here rather than judged after the
+distribution is seen. Order structure is declared present if **either** the
+proportion of metabolites with a within block Spearman p value below 0.05
+exceeds 0.10, which is double the null rate, in either block, **or** a
+Kolmogorov-Smirnov test of the 600 p values against the uniform distribution
+returns p below 0.001 in either block.
+
+- **Order structure present.** Conclusion: acquisition order structure is
+  detectable, and any between group difference in this dataset is confounded
+  with it to an unknown degree. Every other result in this analysis is then
+  reported under that caveat.
+- **No order structure detected.** Conclusion: no evidence of drift along the
+  deposited ordering.
+
+**Reporting rule for the null branch.** A null result here is the outcome most
+likely to be misread. Standing alone beside a clean p value it reads as "the
+confound was checked and ruled out", which is false. It was checked under one
+unverifiable assumption, namely that the deposited order is the acquisition
+order, and the deposit contains nothing that establishes this. Therefore, when
+question 3 returns no detected order structure, the limitation from section 5
+must be restated in the same breath as the result, in the same sentence and
+with equal prominence, never as a footnote or a separate later paragraph. This
+is enforced in code: the null verdict string is constructed with the caveat
+embedded, and a test asserts that it cannot be emitted without it.
 
 This diagnostic cannot vindicate the dataset. It can only detect a problem or
 fail to detect one.
@@ -234,10 +250,35 @@ post-PCI secondary prevention, Asian cohort, uniform dual antiplatelet
 therapy, symptom-driven endpoint, relative peak areas, single cohort, no
 external validation, acquisition order confounded with outcome.
 
+**This scope statement is printed by the reporting code itself**, as the
+leading block of the results output and as a header on every results table,
+rather than living only in this document where a reader must already know to
+look for it. The reason is concrete: a collapsed question 2 verdict sitting
+next to an unscoped headline is precisely the thing that gets screenshotted out
+of the repository and circulated without its qualifications. The renderer
+requires the scope as an argument and verifies that every element listed above
+is present in it, raising if any has been dropped. A result cannot be rendered
+without its scope.
+
 ## 8. Departures from this plan
 
 The partial unblinding described in section 2 is a departure from an ideal
 pre-registration and is recorded there.
+
+**Amendments made on 11 September 2026, before any estimate was produced.**
+Three changes, all following reviewer comment on the plan as first committed,
+and all made while no model had been fitted and no question had been run. They
+are amendments rather than departures, and the distinction is that nothing in
+the data informed them.
+
+1. Question 3's phrase "materially displaced from the null" was unoperationalised
+   in the first version. It is now a stated rule with numbers, fixed before the
+   distribution was seen.
+2. Question 3 gained an explicit reporting rule binding a null result to the
+   section 5 limitation, because a null there is the result most likely to be
+   read as exoneration.
+3. Section 7 gained the requirement that the scope statement is emitted by the
+   reporting code rather than documented here.
 
 No further departures to date. Any change made after the first estimate is
 produced is to be recorded here with its date and reason.
