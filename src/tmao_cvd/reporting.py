@@ -120,6 +120,90 @@ ORDER_STRUCTURE_CAVEAT = (
 ORDER_STRUCTURE_VERDICT = "ORDER STRUCTURE DETECTED"
 
 
+@dataclass(frozen=True)
+class PanelContext:
+    """Where the marker under test sits among all metabolites in the panel.
+
+    Every field is required. The class exists so that the question 1 statement
+    cannot be constructed without this context, rather than relying on the
+    caller to remember to append it.
+    """
+
+    marker: str
+    univariate_auc: float
+    percentile: float
+    ranking_higher: int
+    panel_size: int
+    best_precursor: str
+    best_precursor_auc: float
+    panel_median_auc: float
+
+
+#: The context that must accompany the question 1 difference in area wherever
+#: it appears. An incremental contribution measured inside a panel that is
+#: globally displaced is not evidence about the marker, and the bare figure
+#: invites exactly that reading.
+Q1_CONTEXT_TEMPLATE = (
+    "This figure must be read with the panel context: {marker} has a univariate "
+    "area under the curve of {auc:.4f}, placing it at the {percentile:.1f}th "
+    "percentile of the {panel_size} metabolites in this deposit, with {higher} "
+    "ranking above it, among them {best_precursor}, one of its own precursors, at "
+    "{best_precursor_auc:.4f}. The panel median is {median:.4f} against a null of "
+    "0.5, so an incremental contribution measured inside it is not evidence about "
+    "the biology of the marker."
+)
+
+
+def incremental_value_statement(
+    verdict: str,
+    delta_auc: float,
+    delong_p: float,
+    separation: float,
+    context: PanelContext,
+) -> str:
+    """Build the question 1 verdict sentence, with panel context attached.
+
+    The only constructor for any sentence containing the question 1 difference
+    in area. ``context`` is required and unconditional, so there is no code
+    path that emits the difference without it. This mirrors
+    :func:`order_structure_statement`, and exists for the same reason: the
+    number is more persuasive on its own than the evidence supports.
+    """
+
+    if verdict == "POSITIVE":
+        head = (
+            f"In this cohort the marker carries information about the outcome beyond "
+            f"its dietary precursors. The difference in out of fold area under the "
+            f"curve is {delta_auc:+.4f} (DeLong p = {delong_p:.3g}), and the extended "
+            f"model's decision curve lies above the baseline model's across "
+            f"{separation:.0%} of the pre-specified threshold range."
+        )
+    elif verdict == "NEGATIVE":
+        head = (
+            f"The marker adds nothing beyond its precursors here. The difference in "
+            f"out of fold area under the curve is {delta_auc:+.4f} with DeLong p = "
+            f"{delong_p:.3g}, which does not exclude zero."
+        )
+    else:
+        head = (
+            f"A statistically detectable but clinically negligible contribution. The "
+            f"difference in area is {delta_auc:+.4f} (DeLong p = {delong_p:.3g}), but "
+            f"the decision curves separate across only {separation:.0%} of the "
+            f"threshold range. Per the plan the decision curve governs the wording."
+        )
+
+    return head + " " + Q1_CONTEXT_TEMPLATE.format(
+        marker=context.marker,
+        auc=context.univariate_auc,
+        percentile=context.percentile,
+        panel_size=context.panel_size,
+        higher=context.ranking_higher,
+        best_precursor=context.best_precursor,
+        best_precursor_auc=context.best_precursor_auc,
+        median=context.panel_median_auc,
+    )
+
+
 def render_report(
     results: list[QuestionResult], scope: str = SCOPE_STATEMENT
 ) -> str:

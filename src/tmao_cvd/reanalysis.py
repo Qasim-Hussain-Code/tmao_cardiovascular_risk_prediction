@@ -33,12 +33,19 @@ from .evaluate import (
     summarise_calibration,
 )
 from .models import cross_validated_predictions, make_logistic_model
-from .reporting import QuestionResult, order_structure_statement
+from .reporting import (
+    PanelContext,
+    QuestionResult,
+    incremental_value_statement,
+    order_structure_statement,
+)
 from .st001420 import (
     EXTENDED_FEATURES,
     OUTCOME,
+    PRECURSORS,
     PRECURSOR_FEATURES,
     SAMPLE_INDEX,
+    TMAO,
     metabolite_columns,
 )
 
@@ -58,6 +65,41 @@ Q2_COLLAPSED_SLOPE_FLOOR = 0.70
 Q3_SIGNIFICANT_PROPORTION_LIMIT = 0.10
 Q3_KS_P_LIMIT = 0.001
 Q3_MINIMUM_BLOCK_OBSERVATIONS = 30
+
+
+
+def panel_context(frame: pd.DataFrame) -> PanelContext:
+    """Locate the marker under test among every metabolite in the deposit.
+
+    Required by :func:`~tmao_cvd.reporting.incremental_value_statement`, so
+    question 1 cannot report its difference in area without it. This is a
+    descriptive placement rather than an additional analysis: it re-expresses
+    measurements already in the deposit on a common scale.
+    """
+
+    from sklearn.metrics import roc_auc_score
+
+    outcome = frame[OUTCOME].to_numpy(int)
+    complete = [m for m in metabolite_columns(frame) if frame[m].notna().all()]
+    auc = pd.Series(
+        {
+            m: max(roc_auc_score(outcome, frame[m]), 1 - roc_auc_score(outcome, frame[m]))
+            for m in complete
+        }
+    )
+    precursor_auc = auc[list(PRECURSORS)]
+    best = precursor_auc.idxmax()
+
+    return PanelContext(
+        marker=TMAO,
+        univariate_auc=float(auc[TMAO]),
+        percentile=100 * float((auc < auc[TMAO]).mean()),
+        ranking_higher=int((auc > auc[TMAO]).sum()),
+        panel_size=len(complete),
+        best_precursor=str(best),
+        best_precursor_auc=float(precursor_auc.max()),
+        panel_median_auc=float(auc.median()),
+    )
 
 
 def question_one(
@@ -111,29 +153,17 @@ def question_one(
 
     if interval_excludes_zero and curves_separate:
         verdict = "POSITIVE"
-        statement = (
-            "In this cohort TMAO carries information about recurrent angina beyond its "
-            "dietary precursors. The difference in out of fold area under the curve is "
-            f"{difference:+.4f} (DeLong p = {p_value:.3g}), and the extended model's "
-            f"decision curve lies above the baseline model's across {separation:.0%} of "
-            "the pre-specified threshold range."
-        )
     elif not interval_excludes_zero:
         verdict = "NEGATIVE"
-        statement = (
-            "TMAO adds nothing beyond its precursors here. The difference in out of fold "
-            f"area under the curve is {difference:+.4f} with DeLong p = {p_value:.3g}, "
-            "which does not exclude zero."
-        )
     else:
         verdict = "DISCORDANT"
-        statement = (
-            "A statistically detectable but clinically negligible contribution. The "
-            f"difference in area is {difference:+.4f} (DeLong p = {p_value:.3g}), but the "
-            f"decision curves separate across only {separation:.0%} of the threshold "
-            "range. Per the plan, the decision curve governs the wording: on this "
-            "evidence TMAO would not change a decision."
-        )
+
+    # The difference in area is never formatted into text here. It is passed to
+    # the sole constructor in tmao_cvd.reporting, which attaches the panel
+    # context unconditionally. See the guard test in tests/test_reporting.py.
+    statement = incremental_value_statement(
+        verdict, difference, p_value, separation, panel_context(frame)
+    )
 
     table = pd.DataFrame(
         [
