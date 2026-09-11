@@ -1,0 +1,24 @@
+# Conda environment for the analysis.
+#
+# requirements.txt covers the same dependencies for a pip based setup. This
+# file exists because the analysis is developed under conda, and mixing the
+# two resolvers in one environment is a reliable way to produce a build that
+# works on one machine and nowhere else.
+#
+#   conda env create -f environment.yml
+#   conda activate tmao-cvd
+
+name: tmao-cvd
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python>=3.10
+  - numpy>=1.26
+  - pandas>=2.1
+  - scipy>=1.11
+  - scikit-learn>=1.4
+  - matplotlib>=3.8
+  - pyyaml>=6.0
+  - pytest>=7.4
