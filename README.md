@@ -2,7 +2,7 @@
 
 [![tests](https://github.com/Qasim-Hussain-Code/tmao_cardiovascular_risk_prediction/actions/workflows/tests.yml/badge.svg)](https://github.com/Qasim-Hussain-Code/tmao_cardiovascular_risk_prediction/actions/workflows/tests.yml)
 
-## 1. What this chapter set out to answer
+## 1. What this chapter set out to answer?
 
 Trimethylamine N-oxide is produced when gut bacteria convert dietary choline,
 phosphatidylcholine and L-carnitine into trimethylamine, which the liver then
