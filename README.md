@@ -22,7 +22,7 @@ raises circulating TMAO and independently raises cardiovascular risk, so any
 honest assessment must hold renal function fixed before asking what TMAO
 contributes.
 
-## 2. Why that question could not be answered, and what the search found
+## 2. Why that question could not be answered, and what the search found?
 
 No public dataset supports it. The cohorts that could, chiefly the
 Multi-Ethnic Study of Atherosclerosis and the Cardiovascular Health Study,
