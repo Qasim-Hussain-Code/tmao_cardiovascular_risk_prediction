@@ -43,7 +43,7 @@ That second search located a public Metabolomics Workbench deposit, accession
 ST001420, released under CC BY 4.0. The depositing group is not named anywhere
 in this repository, and nothing here is a comment on them.
 
-## 3. What the deposit can and cannot answer
+## 3. What the deposit can and cannot answer?
 
 | Property | Value |
 | --- | --- |
