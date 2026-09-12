@@ -226,7 +226,7 @@ signal was biological either, since the deposited ordering need not be the
 acquisition ordering. The deposit does not contain what would settle it either
 way. That is the finding.
 
-## 7. What this chapter found
+## 7. What this chapter found?
 
 This chapter's finding is about how to check a claim, not about TMAO.
 
