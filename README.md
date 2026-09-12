@@ -76,7 +76,7 @@ point may be applied to them; this is enforced by an exception in
 identifiers are perfectly ordered by outcome, with no batch identifier, run
 order or acquisition date deposited.
 
-### The analysis at a glance
+### The analysis at a glance:
 
 ![Workflow of the reanalysis: the public deposit and what it omits on the left,
 the six pipeline stages through validation, the three pre-specified questions
